@@ -48,6 +48,7 @@ class IncomingMail extends Controller
                     foreach ($valid_lines as $valid_line){
                         if (strpos($newline, $valid_line) !== false){
                             $response = $this->chat($newline);
+                            $this->addTransaction($response);
                             $joined[] = trim($newline);
                             $joined[] = trim(json_encode($response));
                             break;
@@ -94,5 +95,26 @@ class IncomingMail extends Controller
         $chatResponse = $response->json()['choices'][0]['message']['content'] ?? "No response";
         $responseArray = json_decode($chatResponse, true);
         return $responseArray;
+    }
+    
+    public function addTransaction($data) {
+        $token = env('YNAB_TOKEN');
+        $budget_id = env('YNAB_BUDGET_ID');
+        $response = Http::withToken($token)->post('https://api.ynab.com/v1/budgets/' . $budget_id . '/transactions', [
+            "transaction" => [
+                "account_id" => '7eaabf30-c98d-40ae-9e37-b5cfa1688f27',
+                "date" => date('Y-m-d', strtotime($data['date'])),
+                "amount" => intval($data['value'])*-1000,
+                "payee_id" => NULL,
+                "payee_name" => $data['payee'],
+                "category_id" => NULL,
+                "memo" => $data['comment'],
+                "cleared" => "uncleared",
+                "approved" => false,
+                "flag_color" => NULL,
+                "import_id" => NULL
+            ]
+        ]);
+        return $response['data']['transaction'];
     }
 }

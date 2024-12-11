@@ -38,7 +38,7 @@ class YNAB extends Command
         $this->info(count($budgets) . ' budgets found:');
 
         foreach ($budgets as $budget) {
-            $this->info($budget['name']);
+            $this->info($budget['id'] . " " . $budget['name']);
         }
     }
 }
