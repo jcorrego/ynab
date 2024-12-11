@@ -32,6 +32,7 @@ class IncomingMail extends Controller
         $valid_lines[] = "Bancolombia: Pagaste";
         $valid_lines[] = "Bancolombia le informa Compra por";
         $valid_lines[] = "Bancolombia: Transferiste";
+        $valid_lines[] = "Bancolombia: Compraste";
         $valid_lines[] = "Bancolombia te informa Pago por";
         
         $lines = explode("\n", $plain);
@@ -47,8 +48,8 @@ class IncomingMail extends Controller
                     foreach ($valid_lines as $valid_line){
                         if (strpos($newline, $valid_line) !== false){
                             $response = $this->chat($newline);
-                            $joined[] = $newline;
-                            $joined[] = $response;
+                            $joined[] = trim($newline);
+                            $joined[] = trim(json_encode($response));
                             break;
                         }
                     }
@@ -58,7 +59,13 @@ class IncomingMail extends Controller
                 $newline .= " " . $line;
             }
         }
+        if (count($joined) == 0) {
+            Log::info("No valid lines found: " . $plain);
+            return response("No valid lines found: " . $plain, 422)
+                ->header('content-type', 'text/plain');
+        }
         $plain = implode("\n", $joined);
+        Log::info("Plain content: (" . count($joined) . ") " . $plain);
         
         return response($plain, 200)
             ->header('content-type', 'text/plain');
@@ -68,26 +75,24 @@ class IncomingMail extends Controller
     {
         $openAIEndpoint = 'https://api.openai.com/v1/chat/completions';
         $openai_key = env('OPENAI_KEY');
-        $response = Http::withToken($openai_key)->post($openAIEndpoint, [
-            "model" => "gpt-4o-mini",
-            "messages" => [
-                [
-                    "role" => "user", 
-                    "content" => "For the following text, extract the information of date, payee, account number if available, comment with the type of transaction, and value in a json object: " . $message
-                ]
-            ],
-            'temperature' => 0.7,
-        ]);
+        $response = Http::withToken($openai_key)
+            // ->withHeader('Content-Type', 'application/json')
+            ->post($openAIEndpoint, [
+                "model" => "gpt-4o-mini",
+                "messages" => [
+                    [
+                        "role" => "user", 
+                        "content" => "For the following text, extract the information of date, payee, account number if available, boolean indicating if it was a credit card, comment with the type of transaction, and value in a json object. value should be without currency symbol, decimal point, or thousands separator. For example: {\"date\": \"2022-01-01\", \"payee\": \"John Doe\", \"value\": \"275171\", \"comment\": \"Payment\", \"credit_card\": false, \"account_number\": \"123456\"}"
+                    ],
+                    [
+                        "role" => "user", 
+                        "content" => $message
+                    ]
+                ],
+                'response_format' => ['type' => 'json_object'],
+            ]);
         $chatResponse = $response->json()['choices'][0]['message']['content'] ?? "No response";
-        // Convert JSON string to array
-        $chatResponse = str_replace("json", '', $chatResponse);
-        $chatResponse = str_replace("```", '', $chatResponse);
         $responseArray = json_decode($chatResponse, true);
-    
-        var_dump($responseArray);
-        return response()->json([
-            'response' => $chatResponse,
-        ]);
-        // return $response->getBody()->getContents();
+        return $responseArray;
     }
 }
