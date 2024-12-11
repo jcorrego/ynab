@@ -18,8 +18,8 @@ class IncomingMail extends Controller
         $to = $request->input('envelope.to');
         Log::info($to);
 
-        if ($to != "to@example.net"){
-            return response("To address not expected", 422)
+        if ($to != "7fe28d61bfe8871aa4ce@cloudmailin.net"){
+            return response("Destination address not expected", 422)
                 ->header('content-type', 'text/plain');
         }
 
