@@ -17,9 +17,14 @@ class IncomingMail extends Controller
     public function __invoke(Request $request)
     {
         $to = $request->input('envelope.to');
+        $from = $request->input('envelope.from');
         if ($to != "7fe28d61bfe8871aa4ce@cloudmailin.net"){
-            return response("Destination address not expected", 422)
+            return response("Destination address not expected:" . $to, 422)
                 ->header('content-type', 'text/plain');
+        }
+        if (strpos($from, "cloudmailin.net")){
+          return response("From address not expected: " . $from, 422)
+              ->header('content-type', 'text/plain');
         }
         $subject = $request->input('headers.subject');
         if (strpos($subject, "Alertas y Notificaciones") === false){
@@ -62,6 +67,7 @@ class IncomingMail extends Controller
         }
         if (count($joined) == 0) {
             Log::info("No valid lines found: " . $plain);
+            Log::info("From: " . $from . ', To: ' . $to );
             return response("No valid lines found: " . $plain, 422)
                 ->header('content-type', 'text/plain');
         }
