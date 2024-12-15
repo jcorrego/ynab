@@ -116,7 +116,7 @@ class IncomingMail extends Controller
                 "payee_id" => NULL,
                 "payee_name" => $data['payee'],
                 "category_id" => NULL,
-                "memo" => $data['comment'],
+                "memo" => $data['memo'],
                 "cleared" => "uncleared",
                 "approved" => false,
                 "flag_color" => NULL,
