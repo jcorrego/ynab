@@ -89,7 +89,9 @@ class IncomingMail extends Controller
                 "messages" => [
                     [
                         "role" => "user", 
-                        "content" => "For the following text, extract the information of date, payee, account number if available, boolean indicating if it was a credit card, comment with the type of transaction, and value in a json object. value should be without currency symbol, decimal point, or thousands separator. For example: {\"date\": \"2022-01-01\", \"payee\": \"John Doe\", \"value\": \"275171\", \"comment\": \"Payment\", \"credit_card\": false, \"account_number\": \"123456\"}"
+                        "content" => "For the following text in Spanish, extract the information of date, payee, account number if available, boolean indicating if it was a credit card, 
+                        comment with the type of transaction, and value in a json object. value should be without currency symbol, decimal point, or thousands separator. Values are in COP$.
+                        For example: {\"date\": \"2022-01-01\", \"payee\": \"John Doe\", \"value\": \"275171\", \"memo\": \"Payment\", \"credit_card\": false, \"account_number\": \"123456\"}"
                     ],
                     [
                         "role" => "user", 
