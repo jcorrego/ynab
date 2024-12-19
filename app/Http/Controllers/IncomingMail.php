@@ -110,6 +110,9 @@ class IncomingMail extends Controller
         } else if (str_ends_with($data['account'], '9681') && $data['credit_card'] == true) {
           // Visa Bancolombia JHN
           $data['account'] = 'f45eef68-2634-42f3-bcac-a713a8dcf625';
+        } else if (str_ends_with($data['account'], '3772') && $data['credit_card'] == true) {
+          // Visa Bancolombia JCO
+          $data['account'] = 'ec0b484d-70df-44c7-977c-46baeb526233';
         } else if (str_ends_with($data['account'], '4928') || str_ends_with($data['account'], '7225')) {
           // Cta Ahorros Bancolombia JHN
           $data['account'] = 'cace135f-e574-4ed3-a1c7-79feebe13a4e';
@@ -124,12 +127,17 @@ class IncomingMail extends Controller
           $data['payee'] = 'Sarita';
         } else if (strpos($data['payee'], '3142739861') !== false){
           $data['payee'] = 'Servicios Publicos';
+        } else if (strpos($data['payee'], 'Claro Colombia') !== false){
+          $data['payee'] = 'Claro';
         } else if (strpos($data['payee'], 'TIE CAF JUAN VAL CLI') !== false){
           $data['payee'] = 'Juan Valdez';
           $data['memo'] = 'Juan Valdez Clinica Marly';
         } else if (strpos($data['payee'], 'PRQUEAD 51 CLINICA M') !== false){
           $data['payee'] = 'Parqueadero';
           $data['memo'] = 'Parqueadero Clinica Marly';
+        } else if (stripos($data['payee'], 'NETFLIX') !== false){
+          $data['payee'] = 'Netflix';
+          $data['memo'] = 'Subscripcion mensual';
         }
 
         if (strpos($message, 'Bancolombia informa consignacion') !== false){
