@@ -53,9 +53,19 @@ class IncomingMail extends Controller
                 if (($pos = strpos($message, "Llamanos")) !== false) {
                     $message = substr($message, 0, $pos);
                 }
+                if (($pos = strpos($message, "Inquietudes al")) !== false) {
+                  $message = substr($message, 0, $pos);
+              }
+              
             }
         }
         $response = $this->chat($message);
+        
+        if (empty($response)){
+            return response("No valid response.", 422)
+                ->header('content-type', 'text/plain');
+        }
+        
         $response = $this->setAccountId($response, $message);
         $this->addTransaction($response);
         $joined = [];
@@ -116,6 +126,9 @@ class IncomingMail extends Controller
         } else if (str_ends_with($data['account'], '4928') || str_ends_with($data['account'], '7225')) {
           // Cta Ahorros Bancolombia JHN
           $data['account'] = 'cace135f-e574-4ed3-a1c7-79feebe13a4e';
+        } else if (str_ends_with($data['account'], '1248')) {
+          // Cta Ahorros Bancolombia JHN
+          $data['account'] = '620e7ce6-6a72-4fc2-83b2-e692109d1b87';
         }
         else {
           // Efectivo JCO
@@ -127,6 +140,8 @@ class IncomingMail extends Controller
           $data['payee'] = 'Sarita';
         } else if (strpos($data['payee'], '3142739861') !== false){
           $data['payee'] = 'Servicios Publicos';
+        } else if (strpos($data['payee'], '3103175608') !== false){
+          $data['payee'] = 'Hogar Los Robles';
         } else if (strpos($data['payee'], 'Claro Colombia') !== false){
           $data['payee'] = 'Claro';
         } else if (strpos($data['payee'], 'TIE CAF JUAN VAL CLI') !== false){
