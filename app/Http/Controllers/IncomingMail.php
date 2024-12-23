@@ -87,7 +87,7 @@ class IncomingMail extends Controller
                 "messages" => [
                     [
                         "role" => "user", 
-                        "content" => "For the following text in Spanish, extract the information of date, payee, account number if available, boolean indicating if it was a credit card, 
+                        "content" => "For the following text in Spanish, extract the information of date, payee, account number if available (or use credit card final numbers), boolean indicating if it was a credit card, 
                         comment with the type of transaction, and value in a json object. value should be without currency symbol, decimal point, or thousands separator. Values are in COP$.
                         For example: {\"date\": \"2022-01-01\", \"payee\": \"John Doe\", \"value\": \"275171\", \"memo\": \"Payment\", \"credit_card\": false, \"account\": \"123456\"}"
                     ],
@@ -138,6 +138,8 @@ class IncomingMail extends Controller
         
         if(strpos($data['payee'], '3045814372') !== false) {
           $data['payee'] = 'Sarita';
+        } else if (strpos($data['payee'], '3134776191') !== false){
+          $data['payee'] = 'Veterinaria';
         } else if (strpos($data['payee'], '3142739861') !== false){
           $data['payee'] = 'Servicios Publicos';
         } else if (strpos($data['payee'], '3103175608') !== false){
@@ -147,14 +149,35 @@ class IncomingMail extends Controller
         } else if (strpos($data['payee'], 'TIE CAF JUAN VAL CLI') !== false){
           $data['payee'] = 'Juan Valdez';
           $data['memo'] = 'Juan Valdez Clinica Marly';
+        } else if (strpos($data['payee'], 'PARKING INTERNATIONA') !== false){
+          $data['payee'] = 'Parqueadero';
+          $data['memo'] = 'Parking International';
         } else if (strpos($data['payee'], 'PRQUEAD 51 CLINICA M') !== false){
           $data['payee'] = 'Parqueadero';
           $data['memo'] = 'Parqueadero Clinica Marly';
+        } else if (strpos($data['payee'], 'GoPass Pagos Aut') !== false){
+          $data['payee'] = 'GoPass';
+          $data['memo'] = 'GoPass Pagos Automaticos';
+        } else if (strpos($data['payee'], 'DESARROLLADORA CC FO') !== false){
+          $data['payee'] = 'Parqueadero';
+          $data['memo'] = 'Parqueadero Centro Comercial Fontanar';
         } else if (stripos($data['payee'], 'NETFLIX') !== false){
           $data['payee'] = 'Netflix';
           $data['memo'] = 'Subscripcion mensual';
+        } else if (stripos($data['payee'], 'CINEPOLIS FONTANAR') !== false){
+          $data['payee'] = 'Cinepolis';
+          $data['memo'] = 'Cinepolis Fontanar';
+        } else if (stripos($data['payee'], 'TIENDA ADIDAS') !== false){
+          $data['payee'] = 'Adidas';
+          $data['memo'] = 'Tienda Adidas Fontanar';
+        } else if (stripos($data['payee'], 'AMERICAN EAGLE') !== false){
+          $data['payee'] = 'American Eagle';
+          $data['memo'] = 'AMERICAN EAGLE OUTFITTERS';
+        } else if (stripos($data['payee'], 'EL GALAPAGO CAMPESTR') !== false){
+          $data['payee'] = 'El Galapago Campestre';
         }
-
+        
+        
         if (strpos($message, 'Bancolombia informa consignacion') !== false){
           $data['value'] *= -1;
           $data['memo'] = 'Consignacion';
