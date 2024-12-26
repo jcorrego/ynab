@@ -129,6 +129,9 @@ class IncomingMail extends Controller
         } else if (str_ends_with($data['account'], '1248')) {
           // Cta Ahorros Bancolombia JHN
           $data['account'] = '620e7ce6-6a72-4fc2-83b2-e692109d1b87';
+        } else if (str_ends_with($data['account'], '3955')) {
+          // Fiducuenta JC
+          $data['account'] = '88599a1a-b5d8-4e9c-9871-13d39d7e41b2';
         }
         else {
           // Efectivo JCO
