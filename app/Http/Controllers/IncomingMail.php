@@ -99,10 +99,10 @@ class IncomingMail extends Controller
                 'response_format' => ['type' => 'json_object'],
             ]);
         $chatResponse = $response->json()['choices'][0]['message']['content'] ?? "No response";
-        $responseArray = json_decode($chatResponse, true);
+        $responseArray = json_decode($chatResponse, TRUE);
         return $responseArray;
     }
-    
+
     /**
      * Get the corresponding account id
      *
@@ -117,19 +117,19 @@ class IncomingMail extends Controller
           // Cta Sucesion.
           $data['account'] = '5f0da59b-7c8b-4276-8119-43e9a3fd6e56';
           $data['budget'] = '039d8b03-ecb2-48ec-8258-c309ac93a594';
-        } else if (str_ends_with($data['account'], '9681') && $data['credit_card'] == true) {
+        } elseif (str_ends_with($data['account'], '9681') && $data['credit_card'] == TRUE) {
           // Visa Bancolombia JHN
           $data['account'] = 'f45eef68-2634-42f3-bcac-a713a8dcf625';
-        } else if (str_ends_with($data['account'], '3772') && $data['credit_card'] == true) {
+        } elseif (str_ends_with($data['account'], '3772') && $data['credit_card'] == TRUE) {
           // Visa Bancolombia JCO
           $data['account'] = 'ec0b484d-70df-44c7-977c-46baeb526233';
-        } else if (str_ends_with($data['account'], '4928') || str_ends_with($data['account'], '7225')) {
+        } elseif (str_ends_with($data['account'], '4928') || str_ends_with($data['account'], '7225')) {
           // Cta Ahorros Bancolombia JHN
           $data['account'] = 'cace135f-e574-4ed3-a1c7-79feebe13a4e';
-        } else if (str_ends_with($data['account'], '1248')) {
-          // Cta Ahorros Bancolombia JHN
+        } elseif (str_ends_with($data['account'], '1248') || str_ends_with($data['account'], '5249')) {
+          // Cta Ahorros Bancolombia JCO
           $data['account'] = '620e7ce6-6a72-4fc2-83b2-e692109d1b87';
-        } else if (str_ends_with($data['account'], '3955')) {
+        } elseif (str_ends_with($data['account'], '3955')) {
           // Fiducuenta JC
           $data['account'] = '88599a1a-b5d8-4e9c-9871-13d39d7e41b2';
         }
@@ -138,45 +138,45 @@ class IncomingMail extends Controller
           $data['memo'] .= " Account: " . $data['account'];
           $data['account'] = '7eaabf30-c98d-40ae-9e37-b5cfa1688f27';
         }
-        
-        if(strpos($data['payee'], '3045814372') !== false) {
+
+        if(strpos($data['payee'], '3045814372') !== FALSE) {
           $data['payee'] = 'Sarita';
-        } else if (strpos($data['payee'], '3134776191') !== false){
+        } elseif (strpos($data['payee'], '3134776191') !== FALSE) {
           $data['payee'] = 'Veterinaria';
-        } else if (strpos($data['payee'], '3142739861') !== false){
+        } elseif (strpos($data['payee'], '3142739861') !== FALSE) {
           $data['payee'] = 'Servicios Publicos';
-        } else if (strpos($data['payee'], '3103175608') !== false){
+        } elseif (strpos($data['payee'], '3103175608') !== FALSE) {
           $data['payee'] = 'Hogar Los Robles';
-        } else if (strpos($data['payee'], 'Claro Colombia') !== false){
+        } elseif (strpos($data['payee'], 'Claro Colombia') !== FALSE) {
           $data['payee'] = 'Claro';
-        } else if (strpos($data['payee'], 'TIE CAF JUAN VAL CLI') !== false){
+        } elseif (strpos($data['payee'], 'TIE CAF JUAN VAL CLI') !== FALSE) {
           $data['payee'] = 'Juan Valdez';
           $data['memo'] = 'Juan Valdez Clinica Marly';
-        } else if (strpos($data['payee'], 'PARKING INTERNATIONA') !== false){
+        } elseif (strpos($data['payee'], 'PARKING INTERNATIONA') !== FALSE) {
           $data['payee'] = 'Parqueadero';
           $data['memo'] = 'Parking International';
-        } else if (strpos($data['payee'], 'PRQUEAD 51 CLINICA M') !== false){
+        } elseif (strpos($data['payee'], 'PRQUEAD 51 CLINICA M') !== FALSE) {
           $data['payee'] = 'Parqueadero';
           $data['memo'] = 'Parqueadero Clinica Marly';
-        } else if (strpos($data['payee'], 'GoPass Pagos Aut') !== false){
+        } elseif (strpos($data['payee'], 'GoPass Pagos Aut') !== FALSE) {
           $data['payee'] = 'GoPass';
           $data['memo'] = 'GoPass Pagos Automaticos';
-        } else if (strpos($data['payee'], 'DESARROLLADORA CC FO') !== false){
+        } elseif (strpos($data['payee'], 'DESARROLLADORA CC FO') !== FALSE) {
           $data['payee'] = 'Parqueadero';
           $data['memo'] = 'Parqueadero Centro Comercial Fontanar';
-        } else if (stripos($data['payee'], 'NETFLIX') !== false){
+        } elseif (stripos($data['payee'], 'NETFLIX') !== FALSE) {
           $data['payee'] = 'Netflix';
           $data['memo'] = 'Subscripcion mensual';
-        } else if (stripos($data['payee'], 'CINEPOLIS FONTANAR') !== false){
+        } elseif (stripos($data['payee'], 'CINEPOLIS FONTANAR') !== FALSE) {
           $data['payee'] = 'Cinepolis';
           $data['memo'] = 'Cinepolis Fontanar';
-        } else if (stripos($data['payee'], 'TIENDA ADIDAS') !== false){
+        } elseif (stripos($data['payee'], 'TIENDA ADIDAS') !== FALSE) {
           $data['payee'] = 'Adidas';
           $data['memo'] = 'Tienda Adidas Fontanar';
-        } else if (stripos($data['payee'], 'AMERICAN EAGLE') !== false){
+        } elseif (stripos($data['payee'], 'AMERICAN EAGLE') !== FALSE) {
           $data['payee'] = 'American Eagle';
           $data['memo'] = 'AMERICAN EAGLE OUTFITTERS';
-        } else if (stripos($data['payee'], 'EL GALAPAGO CAMPESTR') !== false){
+        } elseif (stripos($data['payee'], 'EL GALAPAGO CAMPESTR') !== FALSE) {
           $data['payee'] = 'El Galapago Campestre';
         } elseif (stripos($data['payee'], 'UBER RIDES') !== FALSE) {
           $data['payee'] = 'Uber';
