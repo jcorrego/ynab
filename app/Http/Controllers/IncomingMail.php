@@ -183,11 +183,11 @@ class IncomingMail extends Controller
         }
         
         
-        if (strpos($message, 'Bancolombia informa consignacion') !== FALSE){
+        if (strpos($message, 'Bancolombia informa consignacion') !== FALSE) {
           $data['value'] *= -1;
           $data['memo'] = 'Consignacion';
         }
-        if (strpos($message, 'Bancolombia: Recibiste una transferencia') !== FALSE){
+        if (strpos($message, 'Bancolombia: Recibiste una transferencia') !== FALSE) {
           $data['value'] *= -1;
           $data['memo'] = 'Transferencia';
         }
