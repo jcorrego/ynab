@@ -112,8 +112,8 @@ class IncomingMail extends Controller
     public function setAccountId($data, $message) {
         $budget_id = env('YNAB_BUDGET_ID');
         $data['budget'] = $budget_id;
-        $data['value'] = intval($data['value'])*-1000;
-        if (str_ends_with($data['account'], '8821') || (strpos($data['payee'], 'BARRIO LIJACA II BOGOTA') !== false)) {
+        $data['value'] = intval($data['value']) * -1000;
+        if (str_ends_with($data['account'], '8821') || (strpos($data['payee'], 'BARRIO LIJACA II BOGOTA') !== FALSE)) {
           // Cta Sucesion.
           $data['account'] = '5f0da59b-7c8b-4276-8119-43e9a3fd6e56';
           $data['budget'] = '039d8b03-ecb2-48ec-8258-c309ac93a594';
@@ -178,14 +178,16 @@ class IncomingMail extends Controller
           $data['memo'] = 'AMERICAN EAGLE OUTFITTERS';
         } else if (stripos($data['payee'], 'EL GALAPAGO CAMPESTR') !== false){
           $data['payee'] = 'El Galapago Campestre';
+        } elseif (stripos($data['payee'], 'UBER RIDES') !== FALSE) {
+          $data['payee'] = 'Uber';
         }
         
         
-        if (strpos($message, 'Bancolombia informa consignacion') !== false){
+        if (strpos($message, 'Bancolombia informa consignacion') !== FALSE){
           $data['value'] *= -1;
           $data['memo'] = 'Consignacion';
         }
-        if (strpos($message, 'Bancolombia: Recibiste una transferencia') !== false){
+        if (strpos($message, 'Bancolombia: Recibiste una transferencia') !== FALSE){
           $data['value'] *= -1;
           $data['memo'] = 'Transferencia';
         }
