@@ -132,6 +132,9 @@ class IncomingMail extends Controller
         } elseif (str_ends_with($data['account'], '3955')) {
           // Fiducuenta JC
           $data['account'] = '88599a1a-b5d8-4e9c-9871-13d39d7e41b2';
+        } elseif (str_ends_with($data['account'], '4053')) {
+          // AMEX JCO
+          $data['account'] = 'd0d88359-8689-4655-bf21-fef1f1794d2d';
         }
         else {
           // Efectivo JCO
@@ -178,7 +181,10 @@ class IncomingMail extends Controller
           $data['memo'] = 'AMERICAN EAGLE OUTFITTERS';
         } elseif (stripos($data['payee'], 'EL GALAPAGO CAMPESTR') !== FALSE) {
           $data['payee'] = 'El Galapago Campestre';
-        } elseif (stripos($data['payee'], 'UBER RIDES') !== FALSE) {
+        } elseif (stripos($data['payee'], 'UBER RIDES') !== FALSE
+          || stripos($data['payee'], 'UBER BV') !== FALSE
+          || stripos($data['payee'], 'UBER BV USD-USD COLO') !== FALSE
+        ) {
           $data['payee'] = 'Uber';
         }
         
