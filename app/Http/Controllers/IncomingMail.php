@@ -182,6 +182,7 @@ class IncomingMail extends Controller
         } elseif (stripos($data['payee'], 'EL GALAPAGO CAMPESTR') !== FALSE) {
           $data['payee'] = 'El Galapago Campestre';
         } elseif (stripos($data['payee'], 'UBER RIDES') !== FALSE
+          || strpos($data['payee'], 'UBER') !== FALSE
           || stripos($data['payee'], 'UBER BV') !== FALSE
           || stripos($data['payee'], 'UBER BV USD-USD COLO') !== FALSE
         ) {
